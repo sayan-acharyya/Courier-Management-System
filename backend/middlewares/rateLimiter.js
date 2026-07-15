@@ -1,7 +1,7 @@
-import rateLimit from "express-rate-limiter";
+import rateLimit from "express-rate-limit"
 
 //Global API rate limiter
-const globalLimiter = rateLimit({
+export const globalLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100,
     standardHeaders: true,
@@ -11,7 +11,7 @@ const globalLimiter = rateLimit({
     }
 })
 
-const authLimiter = rateLimit({
+export const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 20,
     standardHeaders: true,
@@ -20,4 +20,3 @@ const authLimiter = rateLimit({
         message: "Too many authentication attemps from this IP, please try again after 15 minutes"
     }
 })
-//57:17

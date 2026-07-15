@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import swaggerUI from "swagger-ui-express";
 import cookieParser from "cookie-parser";
 import { swaggerSpec } from "./config/swagger.js";
+import { globalLimiter } from "./middlewares/rateLimiter.js"
 import { errorHandler, notFoundHandler } from "./middlewares/errorHandler.js";
 
 dotenv.config();
@@ -27,7 +28,7 @@ app.use(express.json());
 
 
 //global rate limiter
-//app.use()  
+app.use(globalLimiter);
 
 app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
