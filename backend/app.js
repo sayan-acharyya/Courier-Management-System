@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 import { swaggerSpec } from "./config/swagger.js";
 import { globalLimiter } from "./middlewares/rateLimiter.js"
 import { errorHandler, notFoundHandler } from "./middlewares/errorHandler.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
@@ -35,6 +36,8 @@ app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok", message: "Server is healthy" })
 });
+
+app.use("/api/auth", authRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

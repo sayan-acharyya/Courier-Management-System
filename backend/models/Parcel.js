@@ -1,5 +1,4 @@
-import { required } from "joi";
-import mongoose from "mongoose";
+ import mongoose from "mongoose";
 
 const checkpointSchema = new mongoose.Schema({
     location: {
