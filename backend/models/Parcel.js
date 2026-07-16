@@ -119,4 +119,4 @@ const parcelSchema = new mongoose.Schema({
 
 export const Parcel = mongoose.model("Parcel", parcelSchema);
 
-//1:22:24
+ 
