@@ -35,3 +35,11 @@ export const createParcelSchema = joi.object({
         "large_package").required(),
     weight: joi.number().positive().required(),
 })
+
+export const addCheckpointSchema = joi.object({
+    location: joi.string().min(2).max(100).required(),
+    title: joi.string().min(5).max(200).required(),
+    description: joi.string().min(5).allow("", null),
+    status: joi.string().valid("arrived", "in_transit", "out_for_delivery", "delivered").required(),
+    
+});

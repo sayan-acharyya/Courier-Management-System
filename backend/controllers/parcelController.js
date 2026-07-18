@@ -1,7 +1,7 @@
 import { Parcel } from "../models/parcel.js";
 import { calculateCost } from "../services/calculateCost.js";
 import { generateTrackingId } from "../services/generateTrackingId.js";
-import { createParcelSchema } from "../validations/validations.js";
+import { addCheckpointSchema, createParcelSchema } from "../validations/validations.js";
 
 export const createParcel = async (req, res, next) => {
     try {
@@ -48,4 +48,48 @@ export const createParcel = async (req, res, next) => {
     }
 }
 
- 
+export const getParcelByTrackingId = async (req, res, next) => {
+    try {
+        const { trackingId } = req.params;
+        const parcel = await Parcel.findOne({ trackingId });
+
+        if (!parcel) {
+            return res.status(404).json({ message: "Parcel not found" });
+        }
+
+        res.status(200).json(parcel);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const addCheckpoint = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        const { error, value } = addCheckpointSchema.validate(req.body);
+
+        if (error) {
+            return res.status(400).json({ message: error.details[0].message });
+        }
+
+        const parcel = await Parcel.findById(id);
+
+        if (!parcel) {
+            return res.status(404).json({ message: "Parcel not found" });
+        }
+
+        parcel.checkpoints.push({
+            ...value,
+            updatedBy: req.user ? req.user.name : "System",
+            timestamps: new Date()
+        });
+
+        await parcel.save();
+
+        return res.status(201).json(parcel);
+
+    } catch (error) {
+        next(error);
+    }
+};   

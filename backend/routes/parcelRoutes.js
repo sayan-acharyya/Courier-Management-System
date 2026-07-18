@@ -1,5 +1,5 @@
 import express from "express";
-import { createParcel } from "../controllers/parcelController.js";
+import { addCheckpoint, createParcel, getParcelByTrackingId } from "../controllers/parcelController.js";
 import { adminOnly, protect } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
@@ -108,6 +108,138 @@ const router = express.Router();
  */
 router.post("/", protect, adminOnly, createParcel);
 
+/**
+ * @swagger
+ * /api/parcels/track/{trackingId}:
+ *   get:
+ *     summary: Get parcel details by tracking ID
+ *     tags: [Parcels]
+ *     parameters:
+ *       - in: path
+ *         name: trackingId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Unique tracking ID of the parcel
+ *         example: IND-TRK-px2p3y591
+ *     responses:
+ *       200:
+ *         description: Parcel details retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                 trackingId:
+ *                   type: string
+ *                 senderName:
+ *                   type: string
+ *                 receiverName:
+ *                   type: string
+ *                 shipmentType:
+ *                   type: string
+ *                 originCity:
+ *                   type: string
+ *                 destinationCity:
+ *                   type: string
+ *                 deliveryType:
+ *                   type: string
+ *                 parcelCategory:
+ *                   type: string
+ *                 weight:
+ *                   type: number
+ *                 price:
+ *                   type: number
+ *                 status:
+ *                   type: string
+ *                 checkpoints:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       location:
+ *                         type: string
+ *                       status:
+ *                         type: string
+ *                       title:
+ *                         type: string
+ *                       description:
+ *                         type: string
+ *                       updatedBy:
+ *                         type: string
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *       404:
+ *         description: Parcel not found.
+ *       500:
+ *         description: Internal server error.
+ */
+router.get("/track/:trackingId", getParcelByTrackingId);
+
+/**
+ * @swagger
+ * /api/parcels/{id}/checkpoint:
+ *   post:
+ *     summary: Add a new checkpoint to a parcel (Admin only)
+ *     tags: [Parcels]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB ID of the parcel
+ *         schema:
+ *           type: string
+ *           example: 687a7b0c2d5f7b0012345678
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - location
+ *               - status
+ *               - title
+ *               - description
+ *             properties:
+ *               location:
+ *                 type: string
+ *                 example: Kolkata
+ *               status:
+ *                 type: string
+ *                 enum:
+ *                   - arrived
+ *                   - departed
+ *                   - in_transit
+ *                   - out_for_delivery
+ *                   - delivered
+ *                   - delayed
+ *               title:
+ *                 type: string
+ *                 example: Parcel arrived at Kolkata Hub
+ *               description:
+ *                 type: string
+ *                 example: Parcel has reached the Kolkata sorting facility.
+ *     responses:
+ *       201:
+ *         description: Checkpoint added successfully.
+ *       400:
+ *         description: Validation error.
+ *       401:
+ *         description: Unauthorized access.
+ *       403:
+ *         description: Admin access required.
+ *       404:
+ *         description: Parcel not found.
+ *       500:
+ *         description: Internal server error.
+ */
+router.post("/:id/checkpoint", protect, adminOnly, addCheckpoint);
+
 export default router;
 
-//3:19:20
