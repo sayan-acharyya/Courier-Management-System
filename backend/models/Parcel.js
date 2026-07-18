@@ -32,7 +32,7 @@ const checkpointSchema = new mongoose.Schema({
 }, { _id: false });
 
 const parcelSchema = new mongoose.Schema({
-    trackingid: {
+    trackingId: {
         type: String,
         required: true,
         unique: true,
