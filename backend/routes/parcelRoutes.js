@@ -1,5 +1,5 @@
 import express from "express";
-import { addCheckpoint, createParcel, getParcelByTrackingId } from "../controllers/parcelController.js";
+import { addCheckpoint, createParcel, getAllParcels, getParcelByTrackingId } from "../controllers/parcelController.js";
 import { adminOnly, protect } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
@@ -240,6 +240,105 @@ router.get("/track/:trackingId", getParcelByTrackingId);
  *         description: Internal server error.
  */
 router.post("/:id/checkpoint", protect, adminOnly, addCheckpoint);
+
+/**
+ * @swagger
+ * /api/parcels:
+ *   get:
+ *     summary: Get all parcels with pagination, search, and status filter (Admin only)
+ *     tags: [Parcels]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number.
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Number of parcels per page.
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *           enum:
+ *             - arrived
+ *             - in_transit
+ *             - out_for_delivery
+ *             - delivered
+ *         description: Filter parcels by current status.
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Search parcels by tracking ID.
+ *         example: IND-TRK-px2p3y591
+ *     responses:
+ *       200:
+ *         description: Parcels retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                       trackingId:
+ *                         type: string
+ *                       senderName:
+ *                         type: string
+ *                       receiverName:
+ *                         type: string
+ *                       shipmentType:
+ *                         type: string
+ *                       originCity:
+ *                         type: string
+ *                       destinationCity:
+ *                         type: string
+ *                       deliveryType:
+ *                         type: string
+ *                       parcelCategory:
+ *                         type: string
+ *                       weight:
+ *                         type: number
+ *                       price:
+ *                         type: number
+ *                       checkpoints:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                 page:
+ *                   type: integer
+ *                   example: 1
+ *                 limit:
+ *                   type: integer
+ *                   example: 10
+ *                 total:
+ *                   type: integer
+ *                   example: 52
+ *                 totalPages:
+ *                   type: integer
+ *                   example: 6
+ *       401:
+ *         description: Unauthorized access.
+ *       403:
+ *         description: Admin access required.
+ *       500:
+ *         description: Internal server error.
+ */
+router.get("/", protect, adminOnly, getAllParcels);
+
+
 
 export default router;
 

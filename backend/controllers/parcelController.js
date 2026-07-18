@@ -92,4 +92,76 @@ export const addCheckpoint = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-};   
+};
+
+export const getAllParcels = async (req, res, next) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit, 10) || 10;
+        const status = req.query.status;
+        const search = req.query.search;
+
+
+
+        const matchStage = {};
+
+        if (status) {
+            matchStage["checkpoints.status"] = status;
+        }
+
+        if (search) {
+            matchStage.trackingId = { $regex: search, $options: "i" };
+        }
+
+        const skip = (page - 1) * limit;
+
+        const [parcels, total] = await Promise.all([
+
+            Parcel.aggregate([
+                {
+                    $addFields: {
+                        latestCheckpoint: { $arrayElemAt: ["$checkpoints", -1] }
+                    }
+                },
+                {
+                    $match: matchStage
+                },
+                {
+                    $sort: { createdAt: -1 }
+                },
+                {
+                    $skip: skip
+                },
+                {
+                    $limit: limit,
+                }
+            ]),
+            Parcel.aggregate([
+                {
+                    $addFields: {
+                        latestCheckpoint: { $arrayElemAt: ["$checkpoints", -1] }
+                    }
+                },
+                {
+                    $match: matchStage
+                },
+                {
+                    $count: "total"
+                }
+            ])
+        ]);
+
+        const totalCount = total.length > 0 ? total[0].total : 0;
+
+        res.status(200).json({
+            data: parcels,
+            page,
+            limit,
+            total: totalCount,
+            totalPages: Math.ceil(totalCount / limit)
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
