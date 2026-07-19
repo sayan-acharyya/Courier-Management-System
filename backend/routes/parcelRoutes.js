@@ -1,5 +1,5 @@
 import express from "express";
-import { addCheckpoint, createParcel, getAllParcels, getParcelByTrackingId } from "../controllers/parcelController.js";
+import { addCheckpoint, calculateCostCalculator, createParcel, getAllParcels, getParcelByTrackingId } from "../controllers/parcelController.js";
 import { adminOnly, protect } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
@@ -338,7 +338,102 @@ router.post("/:id/checkpoint", protect, adminOnly, addCheckpoint);
  */
 router.get("/", protect, adminOnly, getAllParcels);
 
-
+/**
+ * @swagger
+ * /api/parcels/calculate-cost:
+ *   post:
+ *     summary: Calculate parcel delivery cost
+ *     tags: [Parcels]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - shipmentType
+ *               - originCity
+ *               - destinationCity
+ *               - deliveryType
+ *               - parcelCategory
+ *               - weight
+ *             properties:
+ *               shipmentType:
+ *                 type: string
+ *                 enum:
+ *                   - national
+ *                   - international
+ *                 example: national
+ *               originCity:
+ *                 type: string
+ *                 example: Kolkata
+ *               destinationCity:
+ *                 type: string
+ *                 example: Delhi
+ *               deliveryType:
+ *                 type: string
+ *                 enum:
+ *                   - standard
+ *                   - overnight
+ *                   - sameDay
+ *                 example: overnight
+ *               parcelCategory:
+ *                 type: string
+ *                 enum:
+ *                   - document
+ *                   - electronics
+ *                   - fragile
+ *                   - clothing
+ *                   - food
+ *                   - medicine
+ *                   - cosmetics
+ *                   - books
+ *                   - small_package
+ *                   - large_package
+ *                 example: electronics
+ *               weight:
+ *                 type: number
+ *                 example: 2.5
+ *                 description: Weight of the parcel in kilograms
+ *           example:
+ *             shipmentType: national
+ *             originCity: Kolkata
+ *             destinationCity: Delhi
+ *             deliveryType: overnight
+ *             parcelCategory: electronics
+ *             weight: 2.5
+ *     responses:
+ *       200:
+ *         description: Delivery cost calculated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 price:
+ *                   type: number
+ *                   example: 450
+ *                 breakdown:
+ *                   type: object
+ *                   properties:
+ *                     baseCharge:
+ *                       type: number
+ *                       example: 200
+ *                     weightCharge:
+ *                       type: number
+ *                       example: 100
+ *                     deliveryCharge:
+ *                       type: number
+ *                       example: 80
+ *                     categoryCharge:
+ *                       type: number
+ *                       example: 70
+ *       400:
+ *         description: Validation error.
+ *       500:
+ *         description: Internal server error.
+ */
+router.post("/calculate-cost", calculateCostCalculator);
 
 export default router;
 

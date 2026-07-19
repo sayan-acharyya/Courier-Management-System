@@ -41,5 +41,24 @@ export const addCheckpointSchema = joi.object({
     title: joi.string().min(5).max(200).required(),
     description: joi.string().min(5).allow("", null),
     status: joi.string().valid("arrived", "in_transit", "out_for_delivery", "delivered").required(),
-    
+
+});
+
+export const calculateCostSchema = joi.object({
+    shipmentType: joi.string().valid("national", "international").required(),
+    originCity: joi.string().min(2).max(100).required(),
+    destinationCity: joi.string().min(2).max(100).required(),
+    parcelCategory: joi.string().valid("document",
+        "electronics",
+        "fragile",
+        "clothing",
+        "food",
+        "medicine",
+        "cosmetics",
+        "books",
+        "small_package",
+        "large_package").required(),
+    weight: joi.number().positive().required(),
+    deliveryType: joi.string().valid("sameDay", "overnight", "standard").required(),
+
 });

@@ -1,7 +1,7 @@
 import { Parcel } from "../models/parcel.js";
 import { calculateCost } from "../services/calculateCost.js";
 import { generateTrackingId } from "../services/generateTrackingId.js";
-import { addCheckpointSchema, createParcelSchema } from "../validations/validations.js";
+import { addCheckpointSchema, calculateCostSchema, createParcelSchema } from "../validations/validations.js";
 
 export const createParcel = async (req, res, next) => {
     try {
@@ -165,4 +165,19 @@ export const getAllParcels = async (req, res, next) => {
     }
 }
 
-//4:07:50
+export const calculateCostCalculator = async (req, res, next) => {
+    try {
+        const { error, value } = calculateCostSchema.validate(req.body);
+
+        if (error) {
+            return res.status(400).json({ message: error.details[0].message });
+        }
+
+        const proceInfo = calculateCost(value);
+
+        res.status(200).json(proceInfo);
+
+    } catch (error) {
+        next(error);
+    }
+}
