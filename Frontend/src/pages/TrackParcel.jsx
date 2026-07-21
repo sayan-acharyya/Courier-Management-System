@@ -23,7 +23,9 @@ const TrackParcel = () => {
   const [searchParams] = useSearchParams();
   const [trackingId, setTrackingId] = useState(searchParams.get("id") || "");
   const dispatch = useDispatch();
-  const { trackedParcel: parcel, trackedLoading: loading, trackError } = useSelector(state => state.parcels);
+   
+  const { trackParcel: parcel, trackLoading: loading, trackError } =
+  useSelector((state) => state.parcels);
 
   const notFound = Boolean(trackError);
   const { toast } = useToast();
@@ -122,6 +124,67 @@ const TrackParcel = () => {
             </motion.div>
           )
         }
+
+        {
+          parcel && !loading && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="max-w-2xl mx-auto space-y-8"
+            >
+              <Card className="border-border/50 shadow-sm">
+                <CardHeader>
+                  <div className="flex items-center justify-between ">
+                    <CardTitle className="font-display flex items-center gap-2">
+                      <Package className="h-5 w-5 text-primary" />
+                      Parcel Details
+                    </CardTitle>
+
+                    <span className={`rounded-full px-3 py-1 text-xs font-medium ${statusColors[currentStatus] || ""}`}>
+                      {currentStatus.replace(/_/g, " ")}
+                    </span>
+                  </div>
+                </CardHeader>
+
+                <CardContent>
+                  <div className="grid grid-cols-2 gap-4 text-sm ">
+                    {
+                      [
+                        ["Tracking ID", parcel.trackingId],
+                        ["Shipment Type", parcel.shipmentType],
+                        ["Delivery Type", parcel.deliveryType],
+                        ["Category", parcel.parcelCategory],
+                        ["Weight", `${parcel.weight} kg`],
+                        ["Origin", parcel.originCity],
+                        ["Destination", parcel.destinationCity],
+                        ["Status", currentStatus.replace(/_/g, " ")],
+                      ].map(([label, value]) => (
+                        <div key={label}>
+                          <span className="text-muted-foreground ">
+                            {label}
+                          </span>
+                          <p className=" font-medium text-foreground capitalize">
+                            {value}
+                          </p>
+                        </div>
+                      ))
+                    }
+                  </div>
+                </CardContent>
+
+              </Card>
+
+              <div>
+                <h3 className="font-display text-xl font-semibold text-foreground mb-6">
+                  Tracking Timeline
+                </h3>
+
+                <TrackingTimeline checkpoints={parcel.checkpoints}/>
+              </div>
+            </motion.div>
+          )
+        }
+
       </div>
     </div>
 
