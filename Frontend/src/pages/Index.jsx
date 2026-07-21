@@ -245,6 +245,7 @@ const Index = () => {
                 onKeyDown={(e) => e.key === 'Enter' && handleQuickTrack()}
                 className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50"
               />
+              
               <Button onClick={handleQuickTrack} className="bg-accent text-accent-foreground hover:bg-accent/90 shrink-0">
                 Track <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
