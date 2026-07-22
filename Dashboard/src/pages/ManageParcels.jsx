@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+ import React from 'react'
+ import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -32,12 +33,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useNavigate } from "react-router-dom";
 import { Search, Filter, Eye, RefreshCw } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import {
-  addCheckpointThunk,
-  fetchParcelsThunk,
-} from "@/features/parcels/parcelSlice";
+// import {
+//   addCheckpointThunk,
+//   fetchParcelsThunk,
+// } from "@/features/parcels/parcelSlice";
 import { toast } from "sonner";
-
-const getParcelStatus = (parcel) => {
-  return <></>;
-};
+ 
+ const ManageParcels = () => {
+   return (
+     <div>ManageParcels</div>
+   )
+ }
+ 
+ export default ManageParcels

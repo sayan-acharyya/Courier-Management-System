@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { loginThunk } from "@/features/auth/authSlice";
+// import { loginThunk } from "@/features/auth/authSlice";
 
 export default function LoginPage() {
   return <></>;

@@ -7,7 +7,7 @@ import {
   BarChart3,
   UserPlus
 } from "lucide-react";
-import { NavLink } from "@/components/NavLink";
+import  NavLink  from "@/components/NavLink";
 import { useNavigate } from "react-router-dom";
 import {
   Sidebar,

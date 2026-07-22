@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { addCheckpointThunk } from "@/features/parcels/parcelSlice";
+//import { addCheckpointThunk } from "@/features/parcels/parcelSlice";
 import { toast } from "sonner";
 
 export default function ParcelDetails() {

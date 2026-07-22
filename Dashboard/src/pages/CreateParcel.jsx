@@ -13,12 +13,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PackagePlus } from "lucide-react";
-import { createParcelThunk } from "@/features/parcels/parcelSlice";
+// import { createParcelThunk } from "@/features/parcels/parcelSlice";
 import { toast } from "sonner";
 import {
   getDestinationOptionsForShipmentType,
   isValidDestinationForShipmentType,
-  PAKISTANI_CITY_OPTIONS,
+  INDIAN_CITY_OPTIONS,
 } from "@/lib/locationData";
 
 const categories = [

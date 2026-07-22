@@ -16,8 +16,8 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { fetchParcelsThunk } from "@/features/parcels/parcelSlice";
-import { fetchDashboardStatsThunk } from "@/features/dashboard/dashboardSlice";
+// import { fetchParcelsThunk } from "@/features/parcels/parcelSlice";
+// import { fetchDashboardStatsThunk } from "@/features/dashboard/dashboardSlice";
 import {
   BarChart,
   Bar,

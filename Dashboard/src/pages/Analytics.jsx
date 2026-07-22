@@ -18,7 +18,7 @@ import {
   Area,
   AreaChart,
 } from "recharts";
-import { fetchAnalyticsThunk } from "@/features/analytics/analyticsSlice";
+// import { fetchAnalyticsThunk } from "@/features/analytics/analyticsSlice";
 
 export default function Analytics() {
   return <></>;
