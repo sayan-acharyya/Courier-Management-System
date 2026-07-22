@@ -37,36 +37,56 @@ const Contact = () => {
   const [sending, setSending] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!form.name || !form.email || !form.message) {
-      toast({
-        title: "Missing fields",
-        description: "Please fill in all required fields.",
-        variant: "destructive",
-      });
-      return;
-    }
+  if (!form.name || !form.email || !form.message) {
+    toast({
+      title: "Missing fields",
+      description: "Please fill in all required fields.",
+      variant: "destructive",
+    });
+    return;
+  }
 
+  try {
     setSending(true);
 
-    setTimeout(() => {
-      setSending(false);
+    const response = await fetch("http://localhost:5000/api/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
+    });
 
-      toast({
-        title: "Message sent!",
-        description: "Rydex Swift will get back to you within 24 hours.",
-      });
+    const data = await response.json();
 
-      setForm({
-        name: "",
-        email: "",
-        phone: "",
-        message: "",
-      });
-    }, 1500);
-  };
+    if (!response.ok) {
+      throw new Error(data.message || "Something went wrong");
+    }
+
+    toast({
+      title: "Message sent!",
+      description: "Rydex Swift will get back to you within 24 hours.",
+    });
+
+    setForm({
+      name: "",
+      email: "",
+      phone: "",
+      message: "",
+    });
+  } catch (error) {
+    toast({
+      title: "Error",
+      description: error.message,
+      variant: "destructive",
+    });
+  } finally {
+    setSending(false);
+  }
+};
 
   return (
     <div className="min-h-screen pt-24 pb-20">
