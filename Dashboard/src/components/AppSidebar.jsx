@@ -30,6 +30,7 @@ const mainItems = [
   { title: "Manage Parcels", url: "/manage-parcels", icon: Boxes },
   { title: "Analytics", url: "/analytics", icon: BarChart3 },
   { title: "Parcel Tracking", url: "/tracking", icon: Search },
+  {title: "Add admin", url: "/add-admin", icon: UserPlus},
   { title: "Messages", url: "/messages", icon: MessageSquare },
 ];
 export function AppSidebar() {
