@@ -5,7 +5,8 @@ import {
   Search,
   LogOut,
   BarChart3,
-  UserPlus
+  UserPlus,
+  MessageSquare
 } from "lucide-react";
 import { NavLink } from "./NavLink";
 import { useNavigate } from "react-router-dom";
@@ -29,6 +30,7 @@ const mainItems = [
   { title: "Manage Parcels", url: "/manage-parcels", icon: Boxes },
   { title: "Analytics", url: "/analytics", icon: BarChart3 },
   { title: "Parcel Tracking", url: "/tracking", icon: Search },
+  { title: "Messages", url: "/messages", icon: MessageSquare },
 ];
 export function AppSidebar() {
 
