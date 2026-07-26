@@ -17,7 +17,7 @@ export function TrackingTimeline({ checkpoints }) {
                 <MapPin className="h-3 w-3"/>
                 <span>{cp.location}</span>
                 <span className="mx-1">•</span>
-                <span>{new Date(cp.timestamp).toLocaleDateString("en-PK", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })}</span>
+                <span>{new Date(cp.timestamps).toLocaleDateString("en-PK", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })}</span>
               </div>
             </div>
           </motion.div>);
