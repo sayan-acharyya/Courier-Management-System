@@ -1,5 +1,5 @@
- import React from 'react'
- import { useEffect, useMemo, useState } from "react";
+import React from 'react'
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -38,11 +38,20 @@ import { Label } from "@/components/ui/label";
 //   fetchParcelsThunk,
 // } from "@/features/parcels/parcelSlice";
 import { toast } from "sonner";
- 
- const ManageParcels = () => {
-   return (
-     <div>ManageParcels</div>
-   )
- }
- 
- export default ManageParcels
+
+const getParcelStatus = (parcel) => {
+  const checkpoints = parcel?.checkpoints || [];
+  if (!checkpoints.length) return "arrived";
+  return checkpoints[checkpoints.length - 1].status || "arrived";
+};
+
+
+const ManageParcels = () => {
+  return (
+    <div>ManageParcels</div>
+  )
+}
+
+export default ManageParcels;
+
+//11:19:12
