@@ -262,6 +262,53 @@ export default function Analytics() {
         </Card>
 
 
+        <Card className="border-0 shadow-md">
+          <CardHeader>
+            <CardTitle className="text-base">Delivery Performance %</CardTitle>
+            <CardContent>
+              {
+                loading ? (
+                  <Skeleton className="h-[280px] w-full" />
+                ) : (
+                  <ResponsiveContainer width="100%" height={280}>
+                    <BarChart data={deliveryPerformanceData || []} >
+                      <CartesianGrid strokeDasharray="3 3" />
+
+                      <XAxis
+                        dataKey="month"
+                        stroke="hsl(var(--muted-foreground))"
+                        fontSize={12}
+                      />
+
+                      <YAxis
+                        fontSize={12}
+                        stroke="hsl(var(--muted-foreground))"
+                      />
+
+                      <Tooltip />
+
+                      <Bar
+                        dataKey="onTime"
+                        name="On-Time %"
+                        fill="hsl(var(--success))"
+                        radius={[4, 4, 0, 0]}
+                        stackId="a"
+                      />
+                      <Bar
+                        dataKey="delayed"
+                        name="Delayed %"
+                        fill="hsl(var(--destructive))"
+                        radius={[4, 4, 0, 0]}
+                        stackId="a"
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                )
+              }
+            </CardContent>
+          </CardHeader>
+        </Card>
+
       </div>
     </motion.div>
 
