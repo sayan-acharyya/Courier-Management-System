@@ -98,7 +98,168 @@ export default function Analytics() {
           iconClassName="bg-secondary/10 text-secondary"
         />
 
- 
+
+
+
+      </div>
+
+      {error && (
+        <div className="text-red-500 text-sm mt-2">
+          {error}
+        </div>
+      )}
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Card className="border-0 shadow-md">
+          <CardHeader>
+            <CardTitle className="text-base">Revenue Trend Over Time</CardTitle>
+            <CardContent>
+              {
+                loading ? (
+                  <Skeleton className="h-[280px] w-full" />
+                ) : (
+                  <ResponsiveContainer width="100%" height={280}>
+                    <AreaChart data={revenueData || []} >
+                      <defs>
+                        <linearGradient id="revGred" x1="0" y1="0" x2="0" y2="1">
+                          <stop
+                            offset="5%"
+                            stopColor="hsl(var(--success))"
+                            stopOpacity={0.3}
+                          />
+                          <stop
+                            offset="95%"
+                            stopColor="hsl(var(--success))"
+                            stopOpacity={0}
+                          />
+                        </linearGradient>
+                      </defs>
+
+                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                      <XAxis
+                        dataKey="month"
+                        fontSize={12}
+                        stroke="hsl(var(--muted-foreground))"
+                      />
+                      <YAxis
+                        fontSize={12}
+                        stroke="hsl(var(--muted-foreground))"
+                        tickFormatter={(v) => `₹${v / 1000}k`}
+                      />
+
+                      <Tooltip
+                        formatter={(v) => `INR ${v.toLocaleString()}`}
+                        contentStyle={{
+                          borderRadius: "8px",
+                          border: 'none',
+                          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                        }}
+                      />
+
+                      <Area
+                        type="monotone"
+                        dataKey="revenue"
+                        stroke="hsl(var(--success))"
+                        fill="url(#revGred)"
+                        strokeWidth={2}
+                      />
+
+
+                    </AreaChart>
+                  </ResponsiveContainer>
+                )
+              }
+            </CardContent>
+          </CardHeader>
+        </Card>
+
+        <Card className="border-0 shadow-md">
+          <CardHeader>
+            <CardTitle className="text-base">Parcel Growth</CardTitle>
+            <CardContent>
+              {
+                loading ? (
+                  <Skeleton className="h-[280px] w-full" />
+                ) : (
+                  <ResponsiveContainer width="100%" height={280}>
+                    <LineChart data={parcelGrowthData || []} >
+
+                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                      <XAxis
+                        dataKey="month"
+                        fontSize={12}
+                        stroke="hsl(var(--muted-foreground))"
+                      />
+                      <YAxis
+                        fontSize={12}
+                        stroke="hsl(var(--muted-foreground))"
+                        tickFormatter={(v) => `₹${v / 1000}k`}
+                      />
+
+                      <Tooltip
+
+                        contentStyle={{
+                          borderRadius: "8px",
+                          border: 'none',
+                          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                        }}
+                      />
+
+                      <Line
+                        type="monotone"
+                        dataKey="parcels"
+                        stroke="hsl(var(--primary))"
+                        strokeWidth={2}
+                        dot={{ stroke: "hsl(var(--primary))", r: 4 }}
+                      />
+
+
+                    </LineChart>
+                  </ResponsiveContainer>
+                )
+              }
+            </CardContent>
+          </CardHeader>
+        </Card>
+
+        <Card className="border-0 shadow-md">
+          <CardHeader>
+            <CardTitle className="text-base">Top Destination Cities</CardTitle>
+            <CardContent>
+              {
+                loading ? (
+                  <Skeleton className="h-[280px] w-full" />
+                ) : (
+                  <ResponsiveContainer width="100%" height={280}>
+                    <BarChart data={topCitiesData || []} layout="vertical">
+                      <CartesianGrid strokeDasharray="3 3" />
+
+                      <XAxis
+                        type="number"
+                        stroke="hsl(var(--muted-foreground))"
+                      />
+
+                      <YAxis
+                        type="category"
+                        dataKey="city"
+                        width={100}
+                        stroke="hsl(var(--muted-foreground))"
+                      />
+
+                      <Tooltip />
+
+                      <Bar
+                        dataKey="parcels"
+                        fill="hsl(var(--secondary))"
+                        radius={[0, 4, 4, 0]}
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                )
+              }
+            </CardContent>
+          </CardHeader>
+        </Card>
 
 
       </div>
