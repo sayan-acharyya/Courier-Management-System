@@ -63,15 +63,44 @@ export default function Analytics() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatsCard 
-        title="Total Revenue" 
-        value={totalRevenue} 
-        icon={DollarSign} 
-        prefix="₹" 
-        index={0} 
-        iconClassName="bg-success/10 text-success"
+        <StatsCard
+          title="Total Revenue"
+          value={totalRevenue}
+          icon={DollarSign}
+          prefix="₹"
+          index={0}
+          iconClassName="bg-success/10 text-success"
         />
-        
+
+        <StatsCard
+          title="Total Parcels"
+          value={totalParcels}
+          icon={Package}
+          prefix=""
+          index={1}
+          iconClassName="bg-primary/10 text-primary"
+        />
+
+        <StatsCard
+          title="Avg On-Time %"
+          value={avgOnTime}
+          icon={TrendingUp}
+          suffix="%"
+          index={2}
+          iconClassName="bg-info/10 text-info"
+        />
+
+        <StatsCard
+          title="Cities Served"
+          value={citiesServed}
+          icon={BarChart3}
+          index={3}
+          iconClassName="bg-secondary/10 text-secondary"
+        />
+
+//12:21:21
+
+
       </div>
     </motion.div>
 
