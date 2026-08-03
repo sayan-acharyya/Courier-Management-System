@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { Package, CheckCircle, Truck, Clock } from "lucide-react";
+import { Package, CheckCircle, Truck, Clock, Eye } from "lucide-react";
 import { StatsCard } from "@/components/StatsCard";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -85,9 +85,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+      <div
         className="space-y-6"
       >
         <div>
@@ -326,11 +324,11 @@ const Dashboard = () => {
                         <YAxis
                           fontSize={12}
                           stroke="hsl(var(--muted-foreground))"
-                          
+
                         />
 
                         <Tooltip
-                           
+
                           contentStyle={{
                             borderRadius: "8px",
                             border: 'none',
@@ -354,9 +352,79 @@ const Dashboard = () => {
           </motion.div>
 
 
+
+
+
         </div>
 
-      </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+        >
+          <Card className="border-0 shadow-md">
+            <CardHeader>
+              <CardTitle className="text-base">
+                Recent Parcels
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Tracking Id</TableHead>
+                    <TableHead className="hidden md:table-cell ">Sender</TableHead>
+                    <TableHead className="hidden md:table-cell ">Receiver</TableHead>
+                    <TableHead className="hidden lg:table-cell ">Origin</TableHead>
+                    <TableHead className="hidden lg:table-cell ">Destination</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="hidden sm:table-cell ">Date</TableHead>
+                    <TableHead>Action</TableHead>
+                  </TableRow>
+                </TableHeader>
+
+
+                <TableBody>
+                  {
+                    (items || []).map(p => (
+                      <TableRow>
+                        <TableCell>{p.trackingId}</TableCell>
+                        <TableCell className="hidden md:table-cell ">{p.senderName}</TableCell>
+                        <TableCell className="hidden md:table-cell ">{p.receiverName}</TableCell>
+                        <TableCell className="hidden lg:table-cell ">{p.originCity}</TableCell>
+                        <TableCell className="hidden lg:table-cell ">{p.destinationCity}</TableCell>
+                        <TableCell><StatusBadge status={getParcelStatus(p)} /></TableCell>
+                        <TableCell className="hidden sm:table-cell ">
+                          {p.createdAt
+                            ? new Date(p.createdAt).toLocaleDateString("en-IN", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })
+                            : "N/A"}
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => navigate(`/parcel/${p._id}`)}
+                          >
+                            <Eye className="h-3.5 w-3.5 mr-1" />
+                            View
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  }
+                </TableBody>
+
+
+              </Table>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+      </div>
     </>
   )
 }
