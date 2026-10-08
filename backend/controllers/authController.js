@@ -35,16 +35,20 @@ export const login = async (req, res, next) => {
 
         res.status(200).cookie("token", token, {
             httpOnly: true,
-            expires: new Date(Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000)
+            secure: true,
+            sameSite: "None",
+            expires: new Date(
+                Date.now() + Number(process.env.COOKIE_EXPIRE) * 24 * 60 * 60 * 1000
+            )
         }).json({
-            token,
+            message: "Login successful",
             user: {
                 id: user._id,
                 name: user.name,
                 email: user.email,
                 role: user.role
             }
-        })
+        });
 
     } catch (error) {
         next(error);
