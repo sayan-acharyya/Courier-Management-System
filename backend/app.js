@@ -27,7 +27,7 @@ app.use(helmet());
 app.use(cors({
   origin: [
     "https://transcendent-eclair-ca10bc.netlify.app",
-    "https://glittering-platypus-61148.netlify.app",
+    "https://glittering-platypus-61148a.netlify.app",
   ],
   credentials: true,
 }));
