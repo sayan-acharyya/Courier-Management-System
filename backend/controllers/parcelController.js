@@ -1,4 +1,4 @@
-import { Parcel } from "../models/parcel.js";
+import { Parcel } from "../models/Parcel.js";
 import { calculateCost } from "../services/calculateCost.js";
 import { generateTrackingId } from "../services/generateTrackingId.js";
 import { addCheckpointSchema, calculateCostSchema, createParcelSchema } from "../validations/validations.js";
