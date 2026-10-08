@@ -1,4 +1,4 @@
-import { Parcel } from "../models/parcel.js";
+import { Parcel } from "../models/Parcel.js";
 import {
     getDashboardStatsData,
     getLastMonths
