@@ -1,5 +1,5 @@
-import { Parcel } from "../models/parcel.js";
-import { User } from "../models/user.js";
+import { Parcel } from "../models/Parcel.js";
+import { User } from "../models/User.js";
 
 // Analytics Service Array
 const MONTH_LABELS = [
