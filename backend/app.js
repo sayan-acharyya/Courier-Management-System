@@ -24,12 +24,13 @@ app.set("trust proxy", 1);
 
 app.use(cookieParser());
 app.use(helmet());
-app.use(
-  cors({
-    origin: process.env.BASE_URL,
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: [
+    "https://transcendent-eclair-ca10bc.netlify.app",
+    "https://glittering-platypus-61148.netlify.app",
+  ],
+  credentials: true,
+}));
 app.use(morgan("dev"));
 app.use(compression());
 app.use(express.json());

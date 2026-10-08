@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "/api",
+  baseURL: "https://courier-management-system-4bir.onrender.com/api",
   headers: { "Content-Type": "application/json" },
 });
 
