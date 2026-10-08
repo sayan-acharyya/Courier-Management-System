@@ -2,87 +2,115 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+
 import { loginThunk } from "../features/auth/authSlice";
 
 export default function LoginPage() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
+    const { isAuthenticated, loading } = useSelector(
+        (state) => state.auth
+    );
 
-  const { token, loading } = useSelector(state => state.auth);
+    const [form, setForm] = useState({
+        email: "",
+        password: "",
+    });
 
-  const [form, setForm] = useState({ email: "", password: "" });
+    useEffect(() => {
+        if (isAuthenticated) {
+            const from =
+                location.state?.from?.pathname || "/";
 
-  useEffect(() => {
-    if (token) {
-      const from = location.state?.from?.pathname || "/";
-      navigate(from, { replace: true });
-    }
-  }, [token, navigate, loading.state])
+            navigate(from, { replace: true });
+        }
+    }, [isAuthenticated, navigate, location.state]);
 
-  const onSumbit = async (e) => {
-    e.preventDefault();
-    await dispatch(loginThunk(form))
-  }
+    const onSubmit = async (e) => {
+        e.preventDefault();
 
-  return <>
+        await dispatch(loginThunk(form));
+    };
 
-    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-      <motion.div
-        initial={{ opacity: 0, y: 32 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md "
-      >
-        <Card className="border-0 shadow-md">
-          <CardHeader>
-            <CardTitle className="text-xl">
-              Admin Login
-            </CardTitle>
-          </CardHeader>
+    return (
+        <div className="min-h-screen flex items-center justify-center p-4 bg-background">
+            <motion.div
+                initial={{ opacity: 0, y: 32 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="w-full max-w-md"
+            >
+                <Card className="border-0 shadow-md">
+                    <CardHeader>
+                        <CardTitle className="text-xl">
+                            Admin Login
+                        </CardTitle>
+                    </CardHeader>
 
-          <CardContent>
-            <form onSubmit={onSumbit} className="space-y-4">
-              <div className="space-y-2">
-                <Label>Email</Label>
-                <Input
-                  type="email"
-                  placeholder="admin@example.com"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                />
-              </div>
+                    <CardContent>
+                        <form
+                            onSubmit={onSubmit}
+                            className="space-y-4"
+                        >
+                            <div className="space-y-2">
+                                <Label>Email</Label>
 
-              <div className="space-y-2">
-                <Label>Password</Label>
-                <Input
-                  type="password"
-                  placeholder="***********"
-                  value={form.password}
-                  onChange={(e) => setForm({ ...form, password: e.target.value })}
-                />
-              </div>
+                                <Input
+                                    type="email"
+                                    placeholder="admin@example.com"
+                                    value={form.email}
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            email: e.target.value,
+                                        })
+                                    }
+                                    required
+                                />
+                            </div>
 
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-primary hover:bg-primary/90"
-              >
-                {loading ? "Logging in..." : "Login"}
-              </Button>
+                            <div className="space-y-2">
+                                <Label>Password</Label>
 
-            </form>
-          </CardContent>
-        </Card>
-      </motion.div>
-    </div>
+                                <Input
+                                    type="password"
+                                    placeholder="***********"
+                                    value={form.password}
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            password: e.target.value,
+                                        })
+                                    }
+                                    required
+                                />
+                            </div>
 
-
-  </>;
+                            <Button
+                                type="submit"
+                                disabled={loading}
+                                className="w-full bg-primary hover:bg-primary/90"
+                            >
+                                {loading
+                                    ? "Logging in..."
+                                    : "Login"}
+                            </Button>
+                        </form>
+                    </CardContent>
+                </Card>
+            </motion.div>
+        </div>
+    );
 }
-
- 
